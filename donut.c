@@ -1,12 +1,13 @@
 // src: https://www.a1k0n.net/2006/09/15/obfuscated-c-donut.html
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <math.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int k;
-double sin(), cos();
+
 int main()
 {
     float A = 0, B = 0, i, j, z[1760];
