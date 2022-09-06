@@ -10,49 +10,49 @@ int main()
 {
     float A = 0;
     float B = 0;
-    const size_t kBuffer_size = 1760;
-    float z[kBuffer_size];
-    char b[kBuffer_size];
-    const float kJ_step = 0.07;
-    const float kI_step = 0.02;
     const int kWidth = 80;
     const int kHeight = 22;
+    const size_t kBuffer_size = kWidth * kHeight;
+    float z[kBuffer_size];
+    char buffer[kBuffer_size];
+    const float kPhi_step = 0.07;
+    const float kTheta_step = 0.02;
     const char *kShade_chars = ".,-~:;=!*#$@";
     const char kNew_line = '\n';
     const float kTwo_pi = 2 * M_PI;
     printf("\x1b[2J");
     for (;;)
     {
-        memset(b, ' ', kBuffer_size);
+        memset(buffer, ' ', kBuffer_size);
         memset(z, 0, kBuffer_size * sizeof(float));
-        for (float j = 0; j < kTwo_pi; j += kJ_step)
+        for (float phi = 0; phi < kTwo_pi; phi += kPhi_step)
         {
-            for (float i = 0; i < kTwo_pi; i += kI_step)
+            for (float theta = 0; theta < kTwo_pi; theta += kTheta_step)
             {
-                float c = sin(i);
-                float d = cos(j);
-                float e = sin(A);
-                float f = sin(j);
-                float g = cos(A);
-                float h = d + 2;
-                float D = 1 / (c * h * e + f * g + 5);
-                float l = cos(i);
-                float m = cos(B);
-                float n = sin(B);
-                float t = c * h * g - f * e;
-                int x   = (float)(kWidth / 2) + 30 * D * (l * h * m - t * n);
-                int y = (float)(kHeight / 2 + 1) + 15 * D * (l * h * n + t * m), o = x + kWidth * y;
-                int N = 8 * ((f * e - c * d * g) * m - c * d * e - f * g - l * d * n);
+                float sin_theta = sin(theta);
+                float cos_phi = cos(phi);
+                float sin_A = sin(A);
+                float sin_phi = sin(phi);
+                float cos_A = cos(A);
+                float h = cos_phi + 2;
+                float D = 1 / (sin_theta * h * sin_A + sin_phi * cos_A + 5);
+                float cos_theta = cos(theta);
+                float cos_B = cos(B);
+                float sin_B = sin(B);
+                float t = sin_theta * h * cos_A - sin_phi * sin_A;
+                int x   = (float)(kWidth / 2) + 30 * D * (cos_theta * h * cos_B - t * sin_B);
+                int y = (float)(kHeight / 2 + 1) + 15 * D * (cos_theta * h * sin_B + t * cos_B), o = x + kWidth * y;
+                int N = 8 * ((sin_phi * sin_A - sin_theta * cos_phi * cos_A) * cos_B - sin_theta * cos_phi * sin_A - sin_phi * cos_A - cos_theta * cos_phi * sin_B);
                 if (0 < y && y < kHeight && 0 < x && x < kWidth && D > z[o])
                 {
                     z[o] = D;
-                    b[o] = kShade_chars[N > 0 ? N : 0];
+                    buffer[o] = kShade_chars[N > 0 ? N : 0];
                 }
             }
         }
         printf("\x1b[H");
         for (size_t k = 0; k <= kBuffer_size; k++)
-            putchar(k % kWidth ? b[k] : kNew_line);
+            putchar(k % kWidth ? buffer[k] : kNew_line);
         A += 0.04;
         B += 0.02;
     }
