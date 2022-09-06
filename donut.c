@@ -18,6 +18,7 @@ int main()
         memset(b, 32, 1760);
         memset(z, 0, 7040);
         for (float j = 0; 6.28 > j; j += 0.07)
+        {
             for (float i = 0; 6.28 > i; i += 0.02)
             {
                 float c = sin(i);
@@ -42,6 +43,7 @@ int main()
                     b[o] = ".,-~:;=!*#$@"[N > 0 ? N : 0];
                 }
             }
+        }
         printf("\x1b[H");
         for (int k = 0; 1761 > k; k++)
             putchar(k % 80 ? b[k] : 10);
